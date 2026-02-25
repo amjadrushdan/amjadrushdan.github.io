@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOFTWARE ENGINEER</title>
+<title>AMJAD RUSHDAN — SOFTWARE ENGINEER</title>
+<meta name="description" content="Software Engineer specialising in Java backend, 3DS payment authentication, and production infrastructure. Based in Cyberjaya, Malaysia.">
+<meta property="og:title" content="AMJAD RUSHDAN — SOFTWARE ENGINEER">
+<meta property="og:description" content="Backend engineer. Fintech. Payment systems. 3DS authentication. Production infra.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -114,6 +118,67 @@
     border-color: var(--red);
     position: relative;
     z-index: 1;
+  }
+
+  .nav-cv {
+    display: block;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--black);
+    background: var(--red);
+    border: var(--border-red);
+    text-decoration: none;
+  }
+
+  .nav-cv:hover {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .hero-cta a {
+    display: block;
+    padding: 12px 28px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    border: var(--border);
+    margin-right: -3px;
+    text-decoration: none;
+  }
+
+  .hero-cta .cta-primary {
+    background: var(--red);
+    color: var(--black);
+    border-color: var(--red);
+  }
+
+  .hero-cta .cta-primary:hover {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--white);
+  }
+
+  .hero-cta .cta-secondary {
+    color: var(--white);
+    background: transparent;
+  }
+
+  .hero-cta .cta-secondary:hover {
+    background: var(--red);
+    color: var(--black);
+    border-color: var(--red);
   }
 
   /* ─── HERO ────────────────────────────────────────── */
@@ -400,6 +465,40 @@
     align-self: start;
   }
 
+  .project-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .project-link {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border: 2px solid var(--red);
+    padding: 4px 10px;
+    color: var(--red);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .project-link:hover {
+    background: var(--red);
+    color: var(--black);
+  }
+
+  .project-block:nth-child(even) .project-link {
+    border-color: var(--black);
+    color: var(--black);
+  }
+
+  .project-block:nth-child(even) .project-link:hover {
+    background: var(--black);
+    color: var(--white);
+  }
+
   /* ─── EXPERIENCE ──────────────────────────────────── */
   .exp-block {
     border: var(--border);
@@ -483,6 +582,120 @@
     letter-spacing: 0.12em;
     transform: rotate(2deg);
     display: inline-block;
+  }
+
+  .exp-block + .exp-block {
+    margin-top: -3px;
+  }
+
+  .exp-block.internship {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--black);
+  }
+
+  .exp-block.internship .exp-company {
+    color: var(--black);
+  }
+
+  .exp-block.internship .exp-role-line {
+    border-color: var(--black);
+  }
+
+  .exp-block.internship .exp-period {
+    color: var(--black);
+    border-color: var(--black);
+  }
+
+  .exp-block.internship .exp-duties li::before {
+    color: var(--black);
+  }
+
+  .exp-block.internship .exp-duties li {
+    border-color: #aaa;
+  }
+
+  .exp-block.internship .exp-note {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  /* ─── EDUCATION ───────────────────────────────────── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: var(--border);
+  }
+
+  .edu-block {
+    padding: 28px;
+    border-right: var(--border);
+  }
+
+  .edu-block:last-child {
+    border-right: none;
+  }
+
+  .edu-degree {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .edu-school {
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--red);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .edu-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .edu-period {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--red);
+    border: var(--border-red);
+    padding: 2px 10px;
+  }
+
+  .edu-cgpa {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    background: var(--red);
+    color: var(--black);
+    padding: 2px 10px;
+  }
+
+  @media (max-width: 768px) {
+    .edu-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .edu-block {
+      border-right: none;
+      border-bottom: var(--border);
+    }
+
+    .edu-block:last-child {
+      border-bottom: none;
+    }
   }
 
   /* ─── CONTACT ─────────────────────────────────────── */
@@ -603,8 +816,12 @@
       gap: 12px;
     }
 
-    .project-tech {
+    .project-meta {
       grid-column: 2;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
     }
 
     .project-block:nth-child(even) {
@@ -674,8 +891,10 @@
     <li><a href="#skills">SKILLS</a></li>
     <li><a href="#projects">PROJECTS</a></li>
     <li><a href="#experience">XP</a></li>
+    <li><a href="#education">EDU</a></li>
     <li><a href="#contact">CONTACT</a></li>
   </ul>
+  <a class="nav-cv" href="Resume_AMJAD_RUSHDAN.pdf" download="Amjad_Rushdan_Resume.pdf">↓ CV</a>
 </nav>
 
 <!-- HERO -->
@@ -684,6 +903,11 @@
   <div class="hero-name">AMJAD<br><span>RUSHDAN</span></div>
   <div class="hero-title-stamp">SOFTWARE ENGINEER</div>
   <p class="hero-tagline">"THE UNEXAMINED SYSTEM IS NOT WORTH RUNNING." — SOCRATES, PROBABLY.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="cta-secondary">VIEW PROJECTS</a>
+    <a href="Resume_AMJAD_RUSHDAN.pdf" download="Amjad_Rushdan_Resume.pdf" class="cta-primary">↓ DOWNLOAD CV</a>
+    <a href="#contact" class="cta-secondary">CONTACT</a>
+  </div>
 </section>
 
 <!-- MARQUEE -->
@@ -720,32 +944,38 @@
   <h2 class="section-heading">SKILLS</h2>
   <div class="skills-raw">
     <div class="skills-row">
-      <div class="skill-item accent">JAVA</div>
+      <div class="skill-item accent">JAVA J2EE</div>
+      <div class="skill-item accent">SPRING BOOT</div>
       <div class="skill-item">PYTHON</div>
-      <div class="skill-item">BASH</div>
+      <div class="skill-item">BASH / SHELL</div>
+    </div>
+    <div class="skills-row">
+      <div class="skill-item">JSP</div>
+      <div class="skill-item">HTML5 / CSS</div>
+      <div class="skill-item accent">3DS / ACS</div>
+      <div class="skill-item">REST APIS</div>
+    </div>
+    <div class="skills-row">
+      <div class="skill-item accent">ORACLE SQL</div>
+      <div class="skill-item">MARIADB</div>
+      <div class="skill-item">RABBITMQ</div>
       <div class="skill-item accent">DOCKER</div>
     </div>
     <div class="skills-row">
       <div class="skill-item">KUBERNETES</div>
       <div class="skill-item accent">PROMETHEUS</div>
       <div class="skill-item">GRAFANA</div>
-      <div class="skill-item">APACHE/TOMCAT</div>
+      <div class="skill-item">APACHE HTTPD / TOMCAT</div>
     </div>
     <div class="skills-row">
-      <div class="skill-item accent">ORACLE DB</div>
-      <div class="skill-item">MARIADB</div>
-      <div class="skill-item">RABBITMQ</div>
       <div class="skill-item accent">GH ACTIONS</div>
-    </div>
-    <div class="skills-row">
-      <div class="skill-item">TAILSCALE</div>
+      <div class="skill-item">GIT / BITBUCKET</div>
+      <div class="skill-item">JIRA</div>
       <div class="skill-item accent">LINUX</div>
-      <div class="skill-item">REST APIS</div>
-      <div class="skill-item">3DS PROTOCOL</div>
     </div>
   </div>
   <div class="skills-dump">
-    <p>CURRENT STACK: JAVA SPRING + TOMCAT BEHIND A REVERSE PROXY. ORACLE FOR WHEN IT HAS TO BE ORACLE. MARIADB FOR WHEN IT DOESN'T. RABBITMQ PASSING MESSAGES NOBODY CAN SEE FAIL. PROMETHEUS SCRAPING EVERYTHING. GRAFANA DASHBOARDS NOBODY LOOKS AT UNTIL SOMETHING BREAKS. DOCKER PACKAGING IT ALL. K8S RUNNING IT. GITHUB ACTIONS SHIPPING IT. TAILSCALE MAKING THE WHOLE MESS REACHABLE FROM ANYWHERE.</p>
+    <p>CURRENT STACK: JAVA J2EE + SPRING BOOT ON APACHE TOMCAT BEHIND A REVERSE PROXY. ORACLE FOR CRITICAL FINANCIAL DATA. MARIADB FOR EVERYTHING ELSE. RABBITMQ PASSING MESSAGES NOBODY CAN SEE FAIL. PROMETHEUS SCRAPING EVERYTHING. GRAFANA DASHBOARDS NOBODY LOOKS AT UNTIL SOMETHING BREAKS. DOCKER PACKAGING IT ALL. K8S RUNNING IT. GITHUB ACTIONS SHIPPING IT. PCI DSS COMPLIANCE BAKED IN.</p>
   </div>
 </section>
 
@@ -761,7 +991,10 @@
         <div class="project-name">HOMELAB INFRA</div>
         <p class="project-desc">SELF-HOSTED K8S CLUSTER. PROMETHEUS + GRAFANA MONITORING. TAILSCALE MESH. FULL CI/CD. RUNS ITSELF.</p>
       </div>
-      <span class="project-tech">K8S / DOCKER / TAILSCALE</span>
+      <div class="project-meta">
+        <span class="project-tech">K8S / DOCKER / TAILSCALE</span>
+        <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
+      </div>
     </div>
 
     <div class="project-block">
@@ -770,7 +1003,10 @@
         <div class="project-name">ORDIS</div>
         <p class="project-desc">DISCORD BOT. DOES WHAT IT'S TOLD. DOESN'T CRASH ON WEEKENDS.</p>
       </div>
-      <span class="project-tech">PYTHON / DISCORD API</span>
+      <div class="project-meta">
+        <span class="project-tech">PYTHON / DISCORD API</span>
+        <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
+      </div>
     </div>
 
     <div class="project-block">
@@ -779,7 +1015,10 @@
         <div class="project-name">PRAYER TIME AUTOMATION</div>
         <p class="project-desc">AUTOMATED SCHEDULING SYSTEM. FETCHES TIMES, TRIGGERS ACTIONS, ZERO MANUAL INPUT.</p>
       </div>
-      <span class="project-tech">PYTHON / CRON / BASH</span>
+      <div class="project-meta">
+        <span class="project-tech">PYTHON / CRON / BASH</span>
+        <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
+      </div>
     </div>
 
     <div class="project-block">
@@ -788,7 +1027,10 @@
         <div class="project-name">TRADING BOT</div>
         <p class="project-desc">ALGORITHMIC TRADE EXECUTION. BACKTESTED. PAPER-TRADED. ACTUAL LOGIC, NOT VIBES.</p>
       </div>
-      <span class="project-tech">PYTHON / BROKER API</span>
+      <div class="project-meta">
+        <span class="project-tech">PYTHON / BROKER API</span>
+        <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
+      </div>
     </div>
 
   </div>
@@ -805,20 +1047,62 @@
       <span class="exp-period">2023 — PRESENT</span>
     </div>
     <ul class="exp-duties">
-      <li>BUILT AND MAINTAINED 3DS AUTHENTICATION FLOWS PROCESSING REAL CARD TRANSACTIONS IN PRODUCTION</li>
-      <li>DEPLOYED AND MANAGED PRODUCTION INFRASTRUCTURE — APACHE TOMCAT, ORACLE DB, LINUX SERVERS</li>
+      <li>MAINTAINED AND ENHANCED THE ACCESS CONTROL SERVER (ACS) — THE CORE COMPONENT OF 3DS AUTHENTICATION — PROCESSING REAL CARD TRANSACTIONS IN PRODUCTION</li>
+      <li>UPGRADED LEGACY ENCRYPTION COMPONENTS TO COMPLY WITH LATEST PCI DSS STANDARDS — ZERO DOWNTIME MIGRATION</li>
+      <li>WROTE AND OPTIMISED ORACLE SQL QUERIES SUPPORTING APPLICATION LOGIC, REPORTING, AND PERFORMANCE IMPROVEMENTS</li>
+      <li>AUTOMATED REPORTING TASKS VIA LINUX SHELL SCRIPTING — CUT MANUAL WORKLOAD AND ELIMINATED HUMAN ERROR</li>
+      <li>DEPLOYED AND MANAGED PRODUCTION INFRASTRUCTURE — APACHE HTTPD/TOMCAT, ORACLE DB, LINUX SERVERS</li>
       <li>IMPLEMENTED MONITORING WITH PROMETHEUS AND GRAFANA — ALERTS THAT ACTUALLY FIRE</li>
       <li>AUTOMATED DEPLOYMENT PIPELINES USING GITHUB ACTIONS — SHIP WITHOUT TOUCHING SERVERS</li>
-      <li>WROTE INTEGRATION CODE AGAINST PAYMENT NETWORK APIS AND INTERNAL MICROSERVICES VIA RABBITMQ</li>
-      <li>ON-CALL. THINGS BREAK. I FIX THEM. THEN I MAKE SURE THEY DON'T BREAK AGAIN.</li>
+      <li>PROVIDED PRODUCTION SUPPORT — INVESTIGATED AND RESOLVED REAL-TIME INCIDENTS TO ENSURE SERVICE CONTINUITY</li>
+      <li>TRANSLATED BUSINESS REQUIREMENTS INTO TECHNICAL SOLUTIONS ACROSS PAYMENT NETWORK APIS AND INTERNAL MICROSERVICES</li>
     </ul>
-    <div class="exp-note">KUALA LUMPUR, MY</div>
+    <div class="exp-note">CYBERJAYA, MY</div>
+  </div>
+
+  <div class="exp-block internship">
+    <div class="exp-company">XEERSOFT</div>
+    <div class="exp-role-line">
+      <span class="exp-role">JUNIOR DEVELOPER — INTERNSHIP</span>
+      <span class="exp-period">OCT 2022 — FEB 2023</span>
+    </div>
+    <ul class="exp-duties">
+      <li>ASSISTED IN FULL-STACK DEVELOPMENT WITH A FOCUS ON JAVA AND JSP</li>
+      <li>DEBUGGING, TESTING, AND FEATURE ENHANCEMENTS FOR EXISTING MODULES</li>
+      <li>COLLABORATED IN AGILE SPRINTS — CONTRIBUTED TO TIMELY MILESTONE DELIVERY</li>
+      <li>GIT VERSION CONTROL AND ISSUE TRACKING FROM DAY ONE</li>
+    </ul>
+    <div class="exp-note">MALAYSIA</div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <span class="section-label">// SECTION 05</span>
+  <h2 class="section-heading">EDUCATION</h2>
+  <div class="edu-grid">
+    <div class="edu-block">
+      <div class="edu-degree">BACHELOR IN COMPUTER SCIENCE (SOFTWARE ENGINEERING)</div>
+      <div class="edu-school">UTM</div>
+      <div class="edu-meta">
+        <span class="edu-period">2019 — 2023</span>
+        <span class="edu-cgpa">CGPA 3.79</span>
+      </div>
+    </div>
+    <div class="edu-block">
+      <div class="edu-degree">FOUNDATION OF ENGINEERING</div>
+      <div class="edu-school">UITM</div>
+      <div class="edu-meta">
+        <span class="edu-period">2018 — 2019</span>
+        <span class="edu-cgpa">CGPA 3.78</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
-  <span class="section-label">// SECTION 05</span>
+  <span class="section-label">// SECTION 06</span>
   <h2 class="section-heading">CONTACT</h2>
   <div class="contact-raw">
     <div class="contact-item">
@@ -831,7 +1115,7 @@
     </div>
     <div class="contact-item">
       <span class="contact-label">EMAIL</span>
-      <span class="contact-value"><a href="mailto:amjad.rusdh@gmail.com">amjad.rusdh@gmail.com</a></span>
+      <span class="contact-value"><a href="mailto:amjad.rushd@gmail.com">amjad.rushd@gmail.com</a></span>
     </div>
   </div>
 </section>
