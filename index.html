@@ -29,9 +29,7 @@
     --border-black: 3px solid #000000;
   }
 
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
 
   body {
     background: var(--black);
@@ -39,15 +37,327 @@
     overflow-x: hidden;
   }
 
-  a {
-    color: var(--red);
-    text-decoration: none;
+  a { color: var(--red); text-decoration: none; }
+  a:hover { color: var(--white); background: var(--red); }
+
+  /* ─── MODE TOGGLE BUTTON ──────────────────────────── */
+  #mode-toggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 9999;
+    background: #FF2200;
+    color: #000;
+    border: 3px solid #000;
+    padding: 8px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    image-rendering: pixelated;
+  }
+  #mode-toggle:hover { background: #fff; }
+
+  /* ─── GAME WRAPPER ────────────────────────────────── */
+  #game-wrapper {
+    display: none;
+    flex-direction: column;
+    height: 100vh;
+    background: #5C94FC;
+    overflow: hidden;
+  }
+  #game-wrapper.active { display: flex; }
+
+  #game-hud {
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-bottom: 3px solid #fff;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
-  a:hover {
-    color: var(--white);
-    background: var(--red);
+  #game-hud span { color: #FF2200; }
+
+  #game-canvas-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
   }
+
+  #gameCanvas {
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  /* ─── TOUCH CONTROLS ──────────────────────────────── */
+  #touch-controls {
+    display: none;
+    background: rgba(0,0,0,0.85);
+    border-top: 3px solid #fff;
+    padding: 12px 20px;
+    flex-shrink: 0;
+  }
+
+  @media (pointer: coarse) {
+    #touch-controls { display: flex; justify-content: space-between; align-items: center; }
+  }
+
+  .touch-btn {
+    background: #222;
+    border: 3px solid #fff;
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    width: 52px;
+    height: 52px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .touch-btn:active { background: #FF2200; color: #000; }
+
+  .touch-dpad { display: flex; gap: 4px; align-items: center; }
+  .touch-action { display: flex; gap: 8px; align-items: center; }
+
+  /* ─── SECTION MODAL (pops up when ? block hit) ────── */
+  #section-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 8000;
+    background: rgba(0,0,0,0.85);
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  #section-modal.open { display: flex; }
+
+  #section-modal-inner {
+    background: var(--black);
+    border: 3px solid var(--white);
+    max-width: 680px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  #modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #FF2200;
+    color: #000;
+    border: 3px solid #000;
+    width: 32px;
+    height: 32px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #modal-close:hover { background: var(--white); }
+
+  #modal-content { padding: 28px 24px; }
+
+  .modal-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--red);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .modal-title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--red);
+    padding-bottom: 12px;
+  }
+
+  .modal-body p, .modal-body li {
+    font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .modal-body ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .modal-body li::before {
+    content: '// ';
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .modal-skill-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border: var(--border);
+    margin-top: 12px;
+  }
+
+  .modal-skill-item {
+    padding: 10px 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-right: var(--border);
+    border-bottom: var(--border);
+  }
+
+  .modal-skill-item.accent {
+    background: var(--red);
+    color: var(--black);
+  }
+
+  .modal-project {
+    border: var(--border);
+    padding: 16px;
+    margin-bottom: -3px;
+  }
+
+  .modal-project-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .modal-project-tech {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 2px solid var(--red);
+    padding: 2px 8px;
+    color: var(--red);
+    display: inline-block;
+    margin-top: 8px;
+  }
+
+  .modal-stat {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--red);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .modal-contact-item {
+    display: flex;
+    align-items: center;
+    border: var(--border);
+    margin-top: -3px;
+    overflow: hidden;
+  }
+
+  .modal-contact-label {
+    background: var(--red);
+    color: var(--black);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 14px 16px;
+    min-width: 100px;
+    border-right: var(--border);
+  }
+
+  .modal-contact-value {
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .modal-contact-value a { color: var(--white); }
+  .modal-contact-value a:hover { color: var(--black); background: var(--white); padding: 2px 4px; margin: -2px -4px; }
+
+  /* ─── GAME WIN SCREEN ─────────────────────────────── */
+  #win-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    background: #000;
+    color: var(--white);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+  #win-screen.open { display: flex; }
+
+  #win-screen h1 {
+    font-size: clamp(2rem, 8vw, 5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #FF2200;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  #win-screen p {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    color: var(--red);
+  }
+
+  #win-screen button {
+    background: #FF2200;
+    color: #000;
+    border: 3px solid #000;
+    padding: 12px 28px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    margin: 4px;
+  }
+  #win-screen button:hover { background: var(--white); }
+
+  /* ─── NORMAL PORTFOLIO ────────────────────────────── */
+  #portfolio-wrapper { display: block; }
+  #portfolio-wrapper.hidden { display: none; }
 
   /* ─── MARQUEE ─────────────────────────────────────── */
   .marquee-strip {
@@ -58,7 +368,6 @@
     overflow: hidden;
     white-space: nowrap;
     padding: 10px 0;
-    position: relative;
   }
 
   .marquee-inner {
@@ -98,6 +407,7 @@
     display: flex;
     gap: 0;
     list-style: none;
+    padding-right: 120px;
   }
 
   .nav-links li a {
@@ -180,9 +490,7 @@
     margin-bottom: 24px;
   }
 
-  .hero-name span {
-    color: var(--red);
-  }
+  .hero-name span { color: var(--red); }
 
   .hero-title-stamp {
     display: inline-block;
@@ -268,9 +576,7 @@
     border-right: var(--border);
   }
 
-  .about-block:last-child {
-    border-right: none;
-  }
+  .about-block:last-child { border-right: none; }
 
   .about-block p {
     font-size: clamp(0.9rem, 1.5vw, 1.05rem);
@@ -327,9 +633,7 @@
     border-bottom: var(--border);
   }
 
-  .skills-row:last-child {
-    border-bottom: none;
-  }
+  .skills-row:last-child { border-bottom: none; }
 
   .skill-item {
     padding: 14px 20px;
@@ -342,9 +646,7 @@
     min-width: 140px;
   }
 
-  .skill-item:last-child {
-    border-right: none;
-  }
+  .skill-item:last-child { border-right: none; }
 
   .skill-item.accent {
     background: var(--red);
@@ -385,9 +687,7 @@
     gap: 20px;
   }
 
-  .project-block:nth-child(odd) {
-    border-left: 8px solid var(--red);
-  }
+  .project-block:nth-child(odd) { border-left: 8px solid var(--red); }
 
   .project-block:nth-child(even) {
     transform: translateX(16px);
@@ -397,14 +697,8 @@
     border-left: 8px solid var(--black);
   }
 
-  .project-block:nth-child(even) .project-name {
-    color: var(--black);
-  }
-
-  .project-block:nth-child(even) .project-tech {
-    color: var(--black);
-    border-color: var(--black);
-  }
+  .project-block:nth-child(even) .project-name { color: var(--black); }
+  .project-block:nth-child(even) .project-tech { color: var(--black); border-color: var(--black); }
 
   .project-num {
     font-size: 0.75rem;
@@ -415,9 +709,7 @@
     min-width: 30px;
   }
 
-  .project-block:nth-child(even) .project-num {
-    color: var(--black);
-  }
+  .project-block:nth-child(even) .project-num { color: var(--black); }
 
   .project-name {
     font-size: clamp(1.3rem, 3vw, 2rem);
@@ -465,20 +757,10 @@
     text-decoration: none;
   }
 
-  .project-link:hover {
-    background: var(--red);
-    color: var(--black);
-  }
+  .project-link:hover { background: var(--red); color: var(--black); }
 
-  .project-block:nth-child(even) .project-link {
-    border-color: var(--black);
-    color: var(--black);
-  }
-
-  .project-block:nth-child(even) .project-link:hover {
-    background: var(--black);
-    color: var(--white);
-  }
+  .project-block:nth-child(even) .project-link { border-color: var(--black); color: var(--black); }
+  .project-block:nth-child(even) .project-link:hover { background: var(--black); color: var(--white); }
 
   /* ─── EXPERIENCE ──────────────────────────────────── */
   .exp-block {
@@ -534,15 +816,12 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1.6;
-    padding: 10px 0 10px 0;
+    padding: 10px 0 10px 20px;
     border-bottom: 1px solid #333;
-    padding-left: 20px;
     position: relative;
   }
 
-  .exp-duties li:last-child {
-    border-bottom: none;
-  }
+  .exp-duties li:last-child { border-bottom: none; }
 
   .exp-duties li::before {
     content: '//';
@@ -565,9 +844,7 @@
     display: inline-block;
   }
 
-  .exp-block + .exp-block {
-    margin-top: -3px;
-  }
+  .exp-block + .exp-block { margin-top: -3px; }
 
   .exp-block.internship {
     background: var(--white);
@@ -575,31 +852,12 @@
     border-color: var(--black);
   }
 
-  .exp-block.internship .exp-company {
-    color: var(--black);
-  }
-
-  .exp-block.internship .exp-role-line {
-    border-color: var(--black);
-  }
-
-  .exp-block.internship .exp-period {
-    color: var(--black);
-    border-color: var(--black);
-  }
-
-  .exp-block.internship .exp-duties li::before {
-    color: var(--black);
-  }
-
-  .exp-block.internship .exp-duties li {
-    border-color: #aaa;
-  }
-
-  .exp-block.internship .exp-note {
-    background: var(--black);
-    color: var(--white);
-  }
+  .exp-block.internship .exp-company { color: var(--black); }
+  .exp-block.internship .exp-role-line { border-color: var(--black); }
+  .exp-block.internship .exp-period { color: var(--black); border-color: var(--black); }
+  .exp-block.internship .exp-duties li::before { color: var(--black); }
+  .exp-block.internship .exp-duties li { border-color: #aaa; }
+  .exp-block.internship .exp-note { background: var(--black); color: var(--white); }
 
   /* ─── EDUCATION ───────────────────────────────────── */
   .edu-grid {
@@ -614,9 +872,7 @@
     border-right: var(--border);
   }
 
-  .edu-block:last-child {
-    border-right: none;
-  }
+  .edu-block:last-child { border-right: none; }
 
   .edu-degree {
     font-size: clamp(0.9rem, 2vw, 1.1rem);
@@ -664,21 +920,6 @@
     padding: 2px 10px;
   }
 
-  @media (max-width: 768px) {
-    .edu-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .edu-block {
-      border-right: none;
-      border-bottom: var(--border);
-    }
-
-    .edu-block:last-child {
-      border-bottom: none;
-    }
-  }
-
   /* ─── CONTACT ─────────────────────────────────────── */
   .contact-raw {
     display: flex;
@@ -714,16 +955,8 @@
     letter-spacing: 0.06em;
   }
 
-  .contact-value a {
-    color: var(--white);
-  }
-
-  .contact-value a:hover {
-    color: var(--black);
-    background: var(--white);
-    padding: 2px 4px;
-    margin: -2px -4px;
-  }
+  .contact-value a { color: var(--white); }
+  .contact-value a:hover { color: var(--black); background: var(--white); padding: 2px 4px; margin: -2px -4px; }
 
   /* ─── FOOTER ──────────────────────────────────────── */
   footer {
@@ -743,126 +976,77 @@
     color: #555;
   }
 
-  footer .footer-accent {
-    color: var(--red);
-    font-weight: 700;
-  }
+  footer .footer-accent { color: var(--red); font-weight: 700; }
 
   /* ─── MOBILE ──────────────────────────────────────── */
   @media (max-width: 768px) {
-    nav {
-      padding: 12px 16px;
-    }
-
-    .nav-links {
-      flex-wrap: wrap;
-    }
-
-    .nav-links li a {
-      padding: 4px 10px;
-      font-size: 0.65rem;
-    }
-
-    .hero {
-      padding: 40px 16px 60px;
-    }
-
-    .hero-bleed {
-      display: none;
-    }
-
-    .hero-title-stamp {
-      font-size: clamp(0.9rem, 4vw, 1.4rem);
-    }
-
-    section {
-      padding: 40px 16px;
-    }
-
-    .about-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .about-block {
-      border-right: none;
-      border-bottom: var(--border);
-    }
-
-    .about-block:last-child {
-      border-bottom: none;
-    }
-
-    .project-block {
-      grid-template-columns: auto 1fr;
-      gap: 12px;
-    }
-
-    .project-meta {
-      grid-column: 2;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
-    }
-
-    .project-block:nth-child(even) {
-      transform: translateX(8px);
-    }
-
-    .skills-row {
-      flex-direction: column;
-    }
-
-    .skill-item {
-      border-right: none;
-      border-bottom: var(--border);
-    }
-
-    .skill-item:last-child {
-      border-bottom: none;
-    }
-
-    .exp-block {
-      padding: 20px 16px;
-    }
-
-    .contact-label {
-      min-width: 90px;
-      padding: 14px 12px;
-      font-size: 0.65rem;
-    }
-
-    .contact-value {
-      padding: 14px 16px;
-      font-size: 0.8rem;
-    }
-
-    footer {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+    nav { padding: 12px 16px; }
+    .nav-links { flex-wrap: wrap; padding-right: 60px; }
+    .nav-links li a { padding: 4px 10px; font-size: 0.65rem; }
+    .hero { padding: 40px 16px 60px; }
+    .hero-bleed { display: none; }
+    .hero-title-stamp { font-size: clamp(0.9rem, 4vw, 1.4rem); }
+    section { padding: 40px 16px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-block { border-right: none; border-bottom: var(--border); }
+    .about-block:last-child { border-bottom: none; }
+    .project-block { grid-template-columns: auto 1fr; gap: 12px; }
+    .project-meta { grid-column: 2; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
+    .project-block:nth-child(even) { transform: translateX(8px); }
+    .skills-row { flex-direction: column; }
+    .skill-item { border-right: none; border-bottom: var(--border); }
+    .skill-item:last-child { border-bottom: none; }
+    .exp-block { padding: 20px 16px; }
+    .contact-label { min-width: 90px; padding: 14px 12px; font-size: 0.65rem; }
+    .contact-value { padding: 14px 16px; font-size: 0.8rem; }
+    footer { flex-direction: column; align-items: flex-start; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .edu-block { border-right: none; border-bottom: var(--border); }
+    .edu-block:last-child { border-bottom: none; }
   }
 
   @media (max-width: 480px) {
-    .section-heading {
-      font-size: clamp(2rem, 10vw, 3rem);
-    }
-
-    .about-manifesto {
-      transform: rotate(0deg);
-    }
-
-    .skills-dump {
-      transform: rotate(0deg);
-    }
-
-    .exp-note {
-      transform: rotate(0deg);
-    }
+    .section-heading { font-size: clamp(2rem, 10vw, 3rem); }
+    .about-manifesto { transform: rotate(0deg); }
+    .skills-dump { transform: rotate(0deg); }
+    .exp-note { transform: rotate(0deg); }
   }
 </style>
 </head>
 <body>
+
+<!-- MODE TOGGLE -->
+<button id="mode-toggle" title="Switch between Game and Portfolio mode">▶ PLAY</button>
+
+<!-- ═══════════════════════════════════════════════════
+     GAME WRAPPER
+═══════════════════════════════════════════════════ -->
+<div id="game-wrapper">
+  <div id="game-hud">
+    <div>AMJAD.EXE</div>
+    <div>SCORE: <span id="hud-score">000000</span></div>
+    <div>BLOCKS: <span id="hud-blocks">0/6</span></div>
+    <div>COINS: <span id="hud-coins">0</span></div>
+    <div style="color:#aaa; font-size:0.6rem;">← → MOVE &nbsp; SPACE/↑ JUMP &nbsp; HIT ? TO UNLOCK</div>
+  </div>
+  <div id="game-canvas-wrap">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+  <div id="touch-controls">
+    <div class="touch-dpad">
+      <button class="touch-btn" id="btn-left">◀</button>
+      <button class="touch-btn" id="btn-right">▶</button>
+    </div>
+    <div class="touch-action">
+      <button class="touch-btn" id="btn-jump" style="width:70px;background:#FF2200;color:#000;">JUMP</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     NORMAL PORTFOLIO
+═══════════════════════════════════════════════════ -->
+<div id="portfolio-wrapper">
 
 <!-- NAV -->
 <nav>
@@ -963,7 +1147,6 @@
   <span class="section-label">// SECTION 03</span>
   <h2 class="section-heading">PROJECTS</h2>
   <div class="projects-stack">
-
     <div class="project-block">
       <span class="project-num">01</span>
       <div>
@@ -975,7 +1158,6 @@
         <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
       </div>
     </div>
-
     <div class="project-block">
       <span class="project-num">02</span>
       <div>
@@ -987,7 +1169,6 @@
         <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
       </div>
     </div>
-
     <div class="project-block">
       <span class="project-num">03</span>
       <div>
@@ -999,7 +1180,6 @@
         <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
       </div>
     </div>
-
     <div class="project-block">
       <span class="project-num">04</span>
       <div>
@@ -1011,7 +1191,6 @@
         <a href="https://github.com/amjadrushdan" target="_blank" rel="noopener" class="project-link">↗ GITHUB</a>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -1038,7 +1217,6 @@
     </ul>
     <div class="exp-note">CYBERJAYA, MY</div>
   </div>
-
   <div class="exp-block internship">
     <div class="exp-company">XEERSOFT</div>
     <div class="exp-role-line">
@@ -1105,5 +1283,839 @@
   <p>&copy; 2026 — <span class="footer-accent">ALL RIGHTS WHATEVER</span></p>
 </footer>
 
+</div><!-- /portfolio-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION MODAL
+═══════════════════════════════════════════════════ -->
+<div id="section-modal" role="dialog" aria-modal="true">
+  <div id="section-modal-inner">
+    <button id="modal-close" aria-label="Close">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- WIN SCREEN -->
+<div id="win-screen">
+  <h1>YOU WIN!</h1>
+  <p>ALL BLOCKS UNLOCKED. PORTFOLIO COMPLETE.</p>
+  <div>
+    <button onclick="restartGame()">↺ PLAY AGAIN</button>
+    <button onclick="switchToPortfolio()">VIEW FULL PORTFOLIO</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     GAME ENGINE
+═══════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ── DOM refs ─────────────────────────────────────── */
+  const toggleBtn    = document.getElementById('mode-toggle');
+  const gameWrapper  = document.getElementById('game-wrapper');
+  const portfolioWr  = document.getElementById('portfolio-wrapper');
+  const canvas       = document.getElementById('gameCanvas');
+  const ctx          = canvas.getContext('2d');
+  const modal        = document.getElementById('section-modal');
+  const modalContent = document.getElementById('modal-content');
+  const modalClose   = document.getElementById('modal-close');
+  const winScreen    = document.getElementById('win-screen');
+  const hudScore     = document.getElementById('hud-score');
+  const hudBlocks    = document.getElementById('hud-blocks');
+  const hudCoins     = document.getElementById('hud-coins');
+  const canvasWrap   = document.getElementById('game-canvas-wrap');
+
+  /* ── Mode toggle ──────────────────────────────────── */
+  let gameMode = false;
+  let gameRunning = false;
+  let animFrame = null;
+
+  toggleBtn.addEventListener('click', () => {
+    gameMode = !gameMode;
+    if (gameMode) {
+      portfolioWr.classList.add('hidden');
+      gameWrapper.classList.add('active');
+      toggleBtn.textContent = '◼ PORTFOLIO';
+      startGame();
+    } else {
+      switchToPortfolio();
+    }
+  });
+
+  window.switchToPortfolio = function() {
+    gameMode = false;
+    gameRunning = false;
+    if (animFrame) cancelAnimationFrame(animFrame);
+    gameWrapper.classList.remove('active');
+    portfolioWr.classList.remove('hidden');
+    winScreen.classList.remove('open');
+    toggleBtn.textContent = '▶ PLAY';
+  };
+
+  window.restartGame = function() {
+    winScreen.classList.remove('open');
+    startGame();
+  };
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  function closeModal() {
+    modal.classList.remove('open');
+    if (gameRunning) gameRunning = true; // resume conceptually
+  }
+
+  /* ── Canvas sizing ────────────────────────────────── */
+  const TILE = 32;
+  let W, H;
+
+  function resizeCanvas() {
+    const rect = canvasWrap.getBoundingClientRect();
+    W = Math.floor(rect.width);
+    H = Math.floor(rect.height) || Math.floor(window.innerHeight * 0.7);
+    canvas.width  = W;
+    canvas.height = H;
+  }
+
+  window.addEventListener('resize', () => {
+    if (gameMode) { resizeCanvas(); buildLevel(); }
+  });
+
+  /* ── Palette ──────────────────────────────────────── */
+  const C = {
+    sky:     '#5C94FC',
+    skyLight:'#8EB0FF',
+    ground:  '#8B4513',
+    groundT: '#5D8A00',
+    brick:   '#C84B0D',
+    brickD:  '#8B2A00',
+    qBlock:  '#E8A800',
+    qBlockD: '#A07000',
+    qBlockH: '#888',
+    coin:    '#FFD700',
+    player:  '#2196F3',
+    playerH: '#1565C0',
+    playerS: '#FF6B35',
+    pipe:    '#1B8A1B',
+    pipeD:   '#0D5C0D',
+    white:   '#F0EDE6',
+    black:   '#000',
+    red:     '#FF2200',
+    accent:  '#7EB8C9',
+    flagPole:'#888',
+    flag:    '#FF2200',
+    cloud:   '#DDEEFF',
+  };
+
+  /* ── Section content ──────────────────────────────── */
+  const SECTIONS = [
+    {
+      id: 'about',
+      label: '// SECTION 01',
+      title: 'ABOUT',
+      blockLabel: '?',
+      color: C.qBlock,
+      render: () => `
+        <span class="modal-tag">// SECTION 01</span>
+        <div class="modal-title">ABOUT</div>
+        <div class="modal-body">
+          <span class="modal-stat">2+</span>
+          <p style="margin-bottom:4px;font-size:0.7rem;letter-spacing:0.2em;font-weight:700;">YEARS IN FINTECH</p>
+          <br>
+          <p>SOFTWARE ENGINEER. FINTECH. PAYMENT SYSTEMS. 3DS AUTHENTICATION FLOWS. PRODUCTION INFRA. MONITORING STACKS THAT ACTUALLY PAGE YOU WHEN THINGS BREAK. NO CV BUZZWORDS. JUST SYSTEMS THAT RUN.</p>
+          <br>
+          <p style="text-decoration:line-through;color:var(--red);">PASSIONATE TEAM PLAYER WITH EXCELLENT COMMUNICATION SKILLS.</p>
+          <p>I WRITE CODE THAT PROCESSES REAL MONEY. I BUILD INFRA THAT DOESN'T NEED ME AWAKE AT 3AM. I MONITOR EVERYTHING. I AUTOMATE WHAT SHOULDN'T NEED A HUMAN.</p>
+        </div>`
+    },
+    {
+      id: 'skills',
+      label: '// SECTION 02',
+      title: 'SKILLS',
+      blockLabel: '?',
+      render: () => `
+        <span class="modal-tag">// SECTION 02</span>
+        <div class="modal-title">SKILLS</div>
+        <div class="modal-body">
+          <div class="modal-skill-grid">
+            <div class="modal-skill-item accent">JAVA J2EE</div>
+            <div class="modal-skill-item accent">SPRING BOOT</div>
+            <div class="modal-skill-item">PYTHON</div>
+            <div class="modal-skill-item">BASH / SHELL</div>
+            <div class="modal-skill-item">JSP</div>
+            <div class="modal-skill-item">HTML5 / CSS</div>
+            <div class="modal-skill-item accent">3DS / ACS</div>
+            <div class="modal-skill-item">REST APIS</div>
+            <div class="modal-skill-item accent">ORACLE SQL</div>
+            <div class="modal-skill-item">MARIADB</div>
+            <div class="modal-skill-item">RABBITMQ</div>
+            <div class="modal-skill-item accent">DOCKER</div>
+            <div class="modal-skill-item">KUBERNETES</div>
+            <div class="modal-skill-item accent">PROMETHEUS</div>
+            <div class="modal-skill-item">GRAFANA</div>
+            <div class="modal-skill-item accent">GH ACTIONS</div>
+            <div class="modal-skill-item">GIT / BITBUCKET</div>
+            <div class="modal-skill-item accent">LINUX</div>
+          </div>
+          <br>
+          <p>PCI DSS · APACHE HTTPD/TOMCAT · JIRA · TAILSCALE</p>
+        </div>`
+    },
+    {
+      id: 'projects',
+      label: '// SECTION 03',
+      title: 'PROJECTS',
+      blockLabel: '?',
+      render: () => `
+        <span class="modal-tag">// SECTION 03</span>
+        <div class="modal-title">PROJECTS</div>
+        <div class="modal-body">
+          <div class="modal-project">
+            <div class="modal-project-name">01 — HOMELAB INFRA</div>
+            <p>SELF-HOSTED K8S CLUSTER. PROMETHEUS + GRAFANA MONITORING. TAILSCALE MESH. FULL CI/CD. RUNS ITSELF.</p>
+            <div class="modal-project-tech">K8S / DOCKER / TAILSCALE</div>
+          </div>
+          <div class="modal-project">
+            <div class="modal-project-name">02 — ORDIS</div>
+            <p>DISCORD BOT. DOES WHAT IT'S TOLD. DOESN'T CRASH ON WEEKENDS.</p>
+            <div class="modal-project-tech">PYTHON / DISCORD API</div>
+          </div>
+          <div class="modal-project">
+            <div class="modal-project-name">03 — PRAYER TIME AUTOMATION</div>
+            <p>AUTOMATED SCHEDULING SYSTEM. FETCHES TIMES, TRIGGERS ACTIONS, ZERO MANUAL INPUT.</p>
+            <div class="modal-project-tech">PYTHON / CRON / BASH</div>
+          </div>
+          <div class="modal-project">
+            <div class="modal-project-name">04 — TRADING BOT</div>
+            <p>ALGORITHMIC TRADE EXECUTION. BACKTESTED. PAPER-TRADED. ACTUAL LOGIC, NOT VIBES.</p>
+            <div class="modal-project-tech">PYTHON / BROKER API</div>
+          </div>
+        </div>`
+    },
+    {
+      id: 'experience',
+      label: '// SECTION 04',
+      title: 'EXPERIENCE',
+      blockLabel: '?',
+      render: () => `
+        <span class="modal-tag">// SECTION 04</span>
+        <div class="modal-title">EXPERIENCE</div>
+        <div class="modal-body">
+          <p style="font-size:1.4rem;font-weight:700;color:var(--red);margin-bottom:4px;">FINEXUS</p>
+          <p style="font-weight:700;">SOFTWARE ENGINEER &nbsp;|&nbsp; <span style="color:var(--red);">2023 — PRESENT</span></p>
+          <br>
+          <ul>
+            <li>MAINTAINED ACCESS CONTROL SERVER (ACS) — CORE OF 3DS AUTH — REAL CARD TRANSACTIONS IN PRODUCTION</li>
+            <li>UPGRADED LEGACY ENCRYPTION TO PCI DSS COMPLIANCE — ZERO DOWNTIME MIGRATION</li>
+            <li>OPTIMISED ORACLE SQL QUERIES FOR REPORTING & PERFORMANCE</li>
+            <li>AUTOMATED REPORTING VIA LINUX SHELL SCRIPTING</li>
+            <li>DEPLOYED & MANAGED APACHE HTTPD/TOMCAT, ORACLE DB, LINUX SERVERS</li>
+            <li>IMPLEMENTED PROMETHEUS + GRAFANA MONITORING — ALERTS THAT ACTUALLY FIRE</li>
+            <li>AUTOMATED DEPLOYMENT PIPELINES — GITHUB ACTIONS</li>
+            <li>PRODUCTION SUPPORT — REAL-TIME INCIDENT RESOLUTION</li>
+          </ul>
+          <br>
+          <p style="font-size:1.1rem;font-weight:700;color:var(--red);margin-bottom:4px;">XEERSOFT — INTERNSHIP</p>
+          <p style="font-weight:700;">JUNIOR DEVELOPER &nbsp;|&nbsp; <span style="color:var(--red);">OCT 2022 — FEB 2023</span></p>
+          <br>
+          <ul>
+            <li>FULL-STACK DEVELOPMENT — JAVA + JSP</li>
+            <li>DEBUGGING, TESTING, FEATURE ENHANCEMENTS</li>
+            <li>AGILE SPRINTS — GIT FROM DAY ONE</li>
+          </ul>
+        </div>`
+    },
+    {
+      id: 'education',
+      label: '// SECTION 05',
+      title: 'EDUCATION',
+      blockLabel: '?',
+      render: () => `
+        <span class="modal-tag">// SECTION 05</span>
+        <div class="modal-title">EDUCATION</div>
+        <div class="modal-body">
+          <p style="font-size:1.2rem;font-weight:700;color:var(--red);">UTM</p>
+          <p style="font-weight:700;">BACHELOR IN COMPUTER SCIENCE (SOFTWARE ENGINEERING)</p>
+          <p>2019 — 2023 &nbsp;|&nbsp; <span style="background:var(--red);color:#000;padding:2px 8px;">CGPA 3.79</span></p>
+          <br>
+          <p style="font-size:1.2rem;font-weight:700;color:var(--red);">UITM</p>
+          <p style="font-weight:700;">FOUNDATION OF ENGINEERING</p>
+          <p>2018 — 2019 &nbsp;|&nbsp; <span style="background:var(--red);color:#000;padding:2px 8px;">CGPA 3.78</span></p>
+        </div>`
+    },
+    {
+      id: 'contact',
+      label: '// SECTION 06',
+      title: 'CONTACT',
+      blockLabel: '?',
+      render: () => `
+        <span class="modal-tag">// SECTION 06</span>
+        <div class="modal-title">CONTACT</div>
+        <div class="modal-body">
+          <div class="modal-contact-item">
+            <span class="modal-contact-label">GITHUB</span>
+            <span class="modal-contact-value"><a href="https://github.com/amjadrushdan" target="_blank" rel="noopener">GITHUB.COM/AMJADRUSHDAN</a></span>
+          </div>
+          <div class="modal-contact-item">
+            <span class="modal-contact-label">LINKEDIN</span>
+            <span class="modal-contact-value"><a href="https://www.linkedin.com/in/amjad-rushdan-22bb28224/" target="_blank" rel="noopener">LINKEDIN.COM/IN/AMJADRUSHDAN</a></span>
+          </div>
+          <div class="modal-contact-item">
+            <span class="modal-contact-label">EMAIL</span>
+            <span class="modal-contact-value"><a href="mailto:amjad.rushd@gmail.com">amjad.rushd@gmail.com</a></span>
+          </div>
+        </div>`
+    }
+  ];
+
+  /* ── Game state ───────────────────────────────────── */
+  let player, camera, blocks, coins, particles, groundTiles, clouds;
+  let score, coinsCollected, blocksHit, levelWidth;
+  let keys = {};
+
+  function startGame() {
+    if (animFrame) cancelAnimationFrame(animFrame);
+    gameRunning = true;
+    resizeCanvas();
+    buildLevel();
+    loop();
+  }
+
+  /* ── Level builder ────────────────────────────────── */
+  function buildLevel() {
+    const GY = H - TILE * 3; // ground Y
+    levelWidth = Math.max(W * 4, TILE * 80);
+
+    score = 0;
+    coinsCollected = 0;
+    blocksHit = 0;
+    updateHUD();
+
+    /* Ground tiles */
+    groundTiles = [];
+    for (let x = 0; x < levelWidth; x += TILE) {
+      groundTiles.push({ x, y: GY, w: TILE, h: TILE * 3 });
+    }
+
+    /* Clouds */
+    clouds = [
+      { x: 200, y: 40, w: 90, h: 28 },
+      { x: 500, y: 60, w: 70, h: 22 },
+      { x: 900, y: 30, w: 110, h: 32 },
+      { x: 1300, y: 55, w: 80, h: 26 },
+      { x: 1700, y: 40, w: 95, h: 30 },
+      { x: 2100, y: 50, w: 75, h: 24 },
+    ];
+
+    /* Player */
+    player = {
+      x: TILE * 2,
+      y: GY - TILE * 2,
+      w: TILE * 1.2,
+      h: TILE * 1.5,
+      vx: 0,
+      vy: 0,
+      onGround: false,
+      facingRight: true,
+      frame: 0,
+      frameTimer: 0,
+    };
+
+    /* ? Blocks — evenly spaced across level */
+    blocks = [];
+    coins  = [];
+    particles = [];
+
+    const spacing = Math.floor(levelWidth / (SECTIONS.length + 1));
+    SECTIONS.forEach((sec, i) => {
+      const bx = spacing * (i + 1) - TILE / 2;
+      const by = GY - TILE * 5;
+      blocks.push({
+        x: bx, y: by, w: TILE, h: TILE,
+        hit: false,
+        bounceOffset: 0,
+        bounceDir: 0,
+        sectionIndex: i,
+        label: '?',
+      });
+      // Add coin stack above each ? block as decoration
+      for (let c = 0; c < 3; c++) {
+        coins.push({
+          x: bx + TILE * 0.15,
+          y: by - TILE * (c + 1) * 0.7,
+          w: TILE * 0.5,
+          h: TILE * 0.5,
+          collected: false,
+          spin: Math.random() * Math.PI * 2,
+          floating: true,
+          floatAmp: 4,
+          floatSpeed: 0.04 + c * 0.01,
+          floatBase: by - TILE * (c + 1) * 0.7,
+        });
+      }
+    });
+
+    /* Flag / goal at end */
+    blocks.push({
+      x: levelWidth - TILE * 4,
+      y: GY - TILE * 6,
+      w: TILE,
+      h: TILE * 6,
+      isFlagPole: true,
+    });
+
+    camera = { x: 0 };
+  }
+
+  /* ── Physics constants ────────────────────────────── */
+  const GRAVITY  = 0.55;
+  const JUMP_VEL = -13;
+  const SPEED    = 4;
+  const FRICTION = 0.82;
+
+  /* ── Input ────────────────────────────────────────── */
+  document.addEventListener('keydown', (e) => {
+    keys[e.code] = true;
+    if (['Space','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
+  });
+  document.addEventListener('keyup', (e) => { keys[e.code] = false; });
+
+  // Touch buttons
+  const btnLeft  = document.getElementById('btn-left');
+  const btnRight = document.getElementById('btn-right');
+  const btnJump  = document.getElementById('btn-jump');
+
+  function tbDown(btn, code) {
+    btn.addEventListener('touchstart', (e) => { e.preventDefault(); keys[code] = true; }, { passive: false });
+    btn.addEventListener('touchend',   (e) => { e.preventDefault(); keys[code] = false; }, { passive: false });
+    btn.addEventListener('mousedown',  () => keys[code] = true);
+    btn.addEventListener('mouseup',    () => keys[code] = false);
+    btn.addEventListener('mouseleave', () => keys[code] = false);
+  }
+  tbDown(btnLeft,  'ArrowLeft');
+  tbDown(btnRight, 'ArrowRight');
+  tbDown(btnJump,  'Space');
+
+  /* ── Update ───────────────────────────────────────── */
+  let t = 0;
+
+  function update() {
+    if (!gameRunning) return;
+    t++;
+
+    const GY = H - TILE * 3;
+
+    // Input
+    if (keys['ArrowLeft']  || keys['KeyA']) { player.vx -= 1.2; player.facingRight = false; }
+    if (keys['ArrowRight'] || keys['KeyD']) { player.vx += 1.2; player.facingRight = true; }
+    if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.onGround) {
+      player.vy = JUMP_VEL;
+      player.onGround = false;
+    }
+
+    // Friction & gravity
+    player.vx *= FRICTION;
+    player.vy += GRAVITY;
+
+    // Clamp speed
+    player.vx = Math.max(-SPEED * 1.5, Math.min(SPEED * 1.5, player.vx));
+
+    // Move
+    player.x += player.vx;
+    player.y += player.vy;
+
+    // Ground collision
+    player.onGround = false;
+    if (player.y + player.h >= GY) {
+      player.y = GY - player.h;
+      player.vy = 0;
+      player.onGround = true;
+    }
+
+    // Left bound
+    if (player.x < 0) { player.x = 0; player.vx = 0; }
+
+    // Player hits ? block (jump into from below)
+    blocks.forEach((b) => {
+      if (b.hit || b.isFlagPole) return;
+      if (
+        player.x + player.w > b.x + 4 &&
+        player.x < b.x + b.w - 4 &&
+        player.y < b.y + b.h &&
+        player.y + player.h > b.y &&
+        player.vy < 0
+      ) {
+        // Bounce player down
+        player.vy = Math.abs(player.vy) * 0.5;
+        player.y = b.y + b.h;
+
+        // Hit block
+        b.hit = true;
+        b.bounceOffset = -10;
+        b.bounceDir = 1;
+        blocksHit++;
+        score += 100;
+        updateHUD();
+        spawnCoinBurst(b.x + b.w / 2, b.y);
+        openSection(b.sectionIndex);
+      }
+    });
+
+    // Block bounce animation
+    blocks.forEach((b) => {
+      if (b.bounceDir !== 0) {
+        b.bounceOffset += b.bounceDir * 2;
+        if (b.bounceOffset >= 0) { b.bounceOffset = 0; b.bounceDir = 0; }
+      }
+    });
+
+    // Coins
+    coins.forEach((c) => {
+      if (c.collected) return;
+      c.spin += 0.08;
+      if (c.floating) {
+        c.floatTimer = (c.floatTimer || 0) + c.floatSpeed;
+        c.y = c.floatBase + Math.sin(c.floatTimer) * c.floatAmp;
+      }
+      // Collect
+      if (
+        player.x < c.x + c.w &&
+        player.x + player.w > c.x &&
+        player.y < c.y + c.h &&
+        player.y + player.h > c.y
+      ) {
+        c.collected = true;
+        coinsCollected++;
+        score += 10;
+        updateHUD();
+        spawnCollectParticles(c.x + c.w / 2, c.y + c.h / 2, C.coin);
+      }
+    });
+
+    // Particles
+    particles = particles.filter((p) => p.life > 0);
+    particles.forEach((p) => {
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.vy += 0.3;
+      p.life--;
+      p.alpha = p.life / p.maxLife;
+    });
+
+    // Flag check
+    const flagBlock = blocks.find((b) => b.isFlagPole);
+    if (flagBlock) {
+      if (
+        player.x + player.w > flagBlock.x &&
+        player.x < flagBlock.x + flagBlock.w &&
+        player.y + player.h > flagBlock.y &&
+        player.y < flagBlock.y + flagBlock.h
+      ) {
+        if (blocksHit >= SECTIONS.length) {
+          gameRunning = false;
+          setTimeout(() => winScreen.classList.add('open'), 400);
+        }
+      }
+    }
+
+    // Camera
+    const targetCX = player.x + player.w / 2 - W / 2;
+    camera.x += (targetCX - camera.x) * 0.12;
+    camera.x = Math.max(0, Math.min(levelWidth - W, camera.x));
+
+    // Animate player frame
+    player.frameTimer++;
+    if (Math.abs(player.vx) > 0.5 && player.frameTimer > 8) {
+      player.frame = (player.frame + 1) % 2;
+      player.frameTimer = 0;
+    }
+  }
+
+  function spawnCoinBurst(cx, cy) {
+    for (let i = 0; i < 6; i++) {
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI;
+      const speed = 3 + Math.random() * 4;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 30, maxLife: 30,
+        alpha: 1,
+        color: C.coin,
+        size: 6,
+      });
+    }
+  }
+
+  function spawnCollectParticles(cx, cy, color) {
+    for (let i = 0; i < 8; i++) {
+      const angle = (Math.PI * 2 * i) / 8;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * 2.5,
+        vy: Math.sin(angle) * 2.5,
+        life: 20, maxLife: 20,
+        alpha: 1,
+        color,
+        size: 4,
+      });
+    }
+  }
+
+  function updateHUD() {
+    hudScore.textContent  = String(score).padStart(6, '0');
+    hudBlocks.textContent = `${blocksHit}/${SECTIONS.length}`;
+    hudCoins.textContent  = coinsCollected;
+  }
+
+  /* ── Draw ─────────────────────────────────────────── */
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Sky gradient (simple)
+    ctx.fillStyle = C.sky;
+    ctx.fillRect(0, 0, W, H);
+
+    // Hill decorations (pixel style)
+    drawHills();
+
+    ctx.save();
+    ctx.translate(-camera.x, 0);
+
+    // Clouds
+    clouds.forEach((cl) => drawCloud(cl.x, cl.y, cl.w, cl.h));
+
+    // Ground
+    const GY = H - TILE * 3;
+    groundTiles.forEach((g) => {
+      // Grass top
+      ctx.fillStyle = C.groundT;
+      ctx.fillRect(g.x, g.y, g.w, TILE * 0.4);
+      // Dirt
+      ctx.fillStyle = C.ground;
+      ctx.fillRect(g.x, g.y + TILE * 0.4, g.w, g.h - TILE * 0.4);
+      // Grid lines
+      ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(g.x, g.y, g.w, g.h);
+    });
+
+    // Blocks
+    blocks.forEach((b) => {
+      if (b.isFlagPole) {
+        drawFlagPole(b.x, b.y, b.w, b.h);
+        return;
+      }
+      const by = b.y + b.bounceOffset;
+      if (b.hit) {
+        // Used block
+        ctx.fillStyle = C.qBlockH;
+        ctx.fillRect(b.x, by, b.w, b.h);
+        ctx.strokeStyle = C.black;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(b.x, by, b.w, b.h);
+        // X mark
+        ctx.strokeStyle = '#555';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(b.x + 6, by + 6);
+        ctx.lineTo(b.x + b.w - 6, by + b.h - 6);
+        ctx.moveTo(b.x + b.w - 6, by + 6);
+        ctx.lineTo(b.x + 6, by + b.h - 6);
+        ctx.stroke();
+      } else {
+        // Animate ? block shimmer
+        const shimmer = Math.sin(t * 0.08 + b.sectionIndex) > 0.5;
+        ctx.fillStyle = shimmer ? C.qBlock : C.qBlockD;
+        ctx.fillRect(b.x, by, b.w, b.h);
+        ctx.strokeStyle = C.black;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(b.x, by, b.w, b.h);
+        // Pixel border detail
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillRect(b.x + 3, by + 3, b.w - 6, 4);
+        ctx.fillRect(b.x + 3, by + 3, 4, b.h - 6);
+        // ? text
+        ctx.fillStyle = C.white;
+        ctx.font = `bold ${TILE * 0.7}px 'Space Mono', monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('?', b.x + b.w / 2, by + b.h / 2 + 1);
+
+        // Section label above block
+        ctx.fillStyle = C.accent;
+        ctx.font = `bold ${TILE * 0.28}px 'Space Mono', monospace`;
+        ctx.fillText(SECTIONS[b.sectionIndex].title, b.x + b.w / 2, by - 8);
+      }
+    });
+
+    // Floating coins
+    coins.forEach((c) => {
+      if (c.collected) return;
+      const cx = c.x + c.w / 2;
+      const scale = Math.abs(Math.cos(c.spin));
+      ctx.fillStyle = C.coin;
+      ctx.fillRect(cx - (c.w / 2) * scale, c.y, c.w * scale, c.h);
+      ctx.strokeStyle = '#B8860B';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(cx - (c.w / 2) * scale, c.y, c.w * scale, c.h);
+    });
+
+    // Player
+    drawPlayer();
+
+    // Particles
+    particles.forEach((p) => {
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+    });
+    ctx.globalAlpha = 1;
+
+    ctx.restore();
+
+    // HUD progress bar
+    drawProgressBar();
+  }
+
+  function drawHills() {
+    ctx.fillStyle = '#4a7a00';
+    // Two static hills as decorative bg
+    ctx.beginPath();
+    ctx.ellipse(W * 0.15 - camera.x * 0.1, H - TILE * 3, 80, 45, 0, Math.PI, 0);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(W * 0.6 - camera.x * 0.1, H - TILE * 3, 60, 35, 0, Math.PI, 0);
+    ctx.fill();
+  }
+
+  function drawCloud(x, y, w, h) {
+    ctx.fillStyle = C.cloud;
+    // Draw cloud as pixel-ish rectangles
+    ctx.fillRect(x + w * 0.2, y + h * 0.4, w * 0.6, h * 0.6);
+    ctx.fillRect(x, y + h * 0.5, w, h * 0.5);
+    ctx.fillRect(x + w * 0.3, y, w * 0.4, h * 0.6);
+  }
+
+  function drawFlagPole(x, y, w, h) {
+    // Pole
+    ctx.fillStyle = C.flagPole;
+    ctx.fillRect(x + w / 2 - 3, y, 6, h);
+    // Flag
+    ctx.fillStyle = C.flag;
+    ctx.fillRect(x + w / 2 + 3, y + 4, 20, 14);
+    // Cap
+    ctx.fillStyle = C.white;
+    ctx.fillRect(x + w / 2 - 5, y - 5, 10, 8);
+    // Base
+    ctx.fillStyle = '#aaa';
+    ctx.fillRect(x + w / 2 - 10, H - TILE * 3, 20, TILE * 0.5);
+  }
+
+  /* Pixel-art dev character */
+  function drawPlayer() {
+    const px = player.x;
+    const py = player.y;
+    const pw = player.w;
+    const ph = player.h;
+    const flip = !player.facingRight;
+
+    ctx.save();
+    if (flip) {
+      ctx.scale(-1, 1);
+      ctx.translate(-(px * 2 + pw), 0);
+    }
+
+    const headH  = ph * 0.35;
+    const bodyH  = ph * 0.4;
+    const legH   = ph * 0.25;
+    const headY  = py;
+    const bodyY  = py + headH;
+    const legY   = py + headH + bodyH;
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.ellipse(px + pw / 2, py + ph + 4, pw * 0.5, 5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Body (shirt — use accent blue)
+    ctx.fillStyle = C.player;
+    ctx.fillRect(px + pw * 0.1, bodyY, pw * 0.8, bodyH);
+
+    // Laptop/keyboard on body
+    ctx.fillStyle = '#888';
+    ctx.fillRect(px + pw * 0.15, bodyY + bodyH * 0.2, pw * 0.55, bodyH * 0.5);
+    ctx.fillStyle = '#000';
+    ctx.fillRect(px + pw * 0.18, bodyY + bodyH * 0.25, pw * 0.48, bodyH * 0.35);
+    ctx.fillStyle = '#00FF88';
+    ctx.font = `${Math.floor(pw * 0.15)}px monospace`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('</>', px + pw * 0.2, bodyY + bodyH * 0.28);
+
+    // Head
+    ctx.fillStyle = '#FFCC99';
+    ctx.fillRect(px + pw * 0.15, headY, pw * 0.7, headH);
+
+    // Hair / hat
+    ctx.fillStyle = C.playerH;
+    ctx.fillRect(px + pw * 0.1, headY, pw * 0.8, headH * 0.4);
+
+    // Eyes
+    ctx.fillStyle = '#000';
+    ctx.fillRect(px + pw * 0.28, headY + headH * 0.5, pw * 0.12, headH * 0.2);
+    ctx.fillRect(px + pw * 0.58, headY + headH * 0.5, pw * 0.12, headH * 0.2);
+
+    // Legs (animated walk)
+    const walkOffset = player.onGround && Math.abs(player.vx) > 0.5 ?
+      Math.sin(t * 0.25) * 3 : 0;
+
+    ctx.fillStyle = C.playerH;
+    // Left leg
+    ctx.fillRect(px + pw * 0.15, legY + walkOffset, pw * 0.28, legH);
+    // Right leg
+    ctx.fillRect(px + pw * 0.55, legY - walkOffset, pw * 0.28, legH);
+
+    // Shoes
+    ctx.fillStyle = '#222';
+    ctx.fillRect(px + pw * 0.12, legY + legH - 4 + walkOffset, pw * 0.33, 6);
+    ctx.fillRect(px + pw * 0.53, legY + legH - 4 - walkOffset, pw * 0.33, 6);
+
+    ctx.restore();
+  }
+
+  function drawProgressBar() {
+    const barH  = 4;
+    const barW  = W - 24;
+    const barX  = 12;
+    const barY  = H - 8;
+    const pct   = SECTIONS.length > 0 ? blocksHit / SECTIONS.length : 0;
+    ctx.fillStyle = '#222';
+    ctx.fillRect(barX, barY, barW, barH);
+    ctx.fillStyle = C.red;
+    ctx.fillRect(barX, barY, barW * pct, barH);
+  }
+
+  /* ── Section modal ────────────────────────────────── */
+  function openSection(idx) {
+    if (idx < 0 || idx >= SECTIONS.length) return;
+    const sec = SECTIONS[idx];
+    modalContent.innerHTML = sec.render();
+    modal.classList.add('open');
+  }
+
+  /* ── Game loop ────────────────────────────────────── */
+  function loop() {
+    if (!gameMode) return;
+    update();
+    draw();
+    animFrame = requestAnimationFrame(loop);
+  }
+
+})();
+</script>
 </body>
 </html>
