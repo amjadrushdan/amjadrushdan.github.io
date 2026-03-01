@@ -1025,7 +1025,7 @@
   <div id="game-hud">
     <div>AMJAD.EXE</div>
     <div>SCORE: <span id="hud-score">000000</span></div>
-    <div>BLOCKS: <span id="hud-blocks">0/6</span></div>
+    <div>BLOCKS: <span id="hud-blocks">0/0</span></div>
     <div>COINS: <span id="hud-coins">0</span></div>
     <div style="color:#aaa; font-size:0.6rem;">← → MOVE &nbsp; SPACE/↑ JUMP &nbsp; HIT ? TO UNLOCK</div>
   </div>
@@ -1586,31 +1586,71 @@
 
   /* ── Level builder ────────────────────────────────── */
   function buildLevel() {
-    const GY = H - TILE * 3; // ground Y
-    levelWidth = Math.max(W * 4, TILE * 80);
+    const GY = H - TILE * 3; // ground Y (top of ground)
+    levelWidth = Math.max(W * 6, TILE * 120);
 
     score = 0;
     coinsCollected = 0;
     blocksHit = 0;
     updateHUD();
 
-    /* Ground tiles */
+    /* ── Ground tiles with gaps ─────────────────────── */
     groundTiles = [];
+    // Gap positions (world-x ranges to skip) — placed away from start & ? blocks
+    const gaps = [
+      { start: TILE * 18, end: TILE * 21 },
+      { start: TILE * 35, end: TILE * 38 },
+      { start: TILE * 54, end: TILE * 58 },
+      { start: TILE * 72, end: TILE * 75 },
+      { start: TILE * 90, end: TILE * 93 },
+    ];
     for (let x = 0; x < levelWidth; x += TILE) {
-      groundTiles.push({ x, y: GY, w: TILE, h: TILE * 3 });
+      const inGap = gaps.some((g) => x >= g.start && x < g.end);
+      if (!inGap) {
+        groundTiles.push({ x, y: GY, w: TILE, h: TILE * 3 });
+      }
     }
 
-    /* Clouds */
+    /* ── Platforms (brick ledges) ───────────────────── */
+    // Each platform: { x, y, tiles } — y relative to GY
+    const platformDefs = [
+      // Section 0 (ABOUT) platform
+      { x: TILE * 10, y: GY - TILE * 4, tiles: 4 },
+      // Section 1 (SKILLS) platform — higher
+      { x: TILE * 24, y: GY - TILE * 6, tiles: 5 },
+      // Section 2 (PROJECTS) platform — mid
+      { x: TILE * 40, y: GY - TILE * 4, tiles: 4 },
+      // Section 3 (EXPERIENCE) platform — high
+      { x: TILE * 58, y: GY - TILE * 7, tiles: 6 },
+      // Section 4 (EDUCATION) platform — mid
+      { x: TILE * 76, y: GY - TILE * 5, tiles: 4 },
+      // Section 5 (CONTACT) platform — ground level raised
+      { x: TILE * 93, y: GY - TILE * 4, tiles: 5 },
+      // Extra decorative platforms
+      { x: TILE * 6,  y: GY - TILE * 3, tiles: 2 },
+      { x: TILE * 32, y: GY - TILE * 3, tiles: 3 },
+      { x: TILE * 68, y: GY - TILE * 3, tiles: 3 },
+    ];
+    // Store platforms in groundTiles array with a 'isPlatform' flag
+    platformDefs.forEach((p) => {
+      for (let i = 0; i < p.tiles; i++) {
+        groundTiles.push({ x: p.x + i * TILE, y: p.y, w: TILE, h: TILE, isPlatform: true });
+      }
+    });
+
+    /* ── Clouds ─────────────────────────────────────── */
     clouds = [
-      { x: 200, y: 40, w: 90, h: 28 },
-      { x: 500, y: 60, w: 70, h: 22 },
-      { x: 900, y: 30, w: 110, h: 32 },
-      { x: 1300, y: 55, w: 80, h: 26 },
-      { x: 1700, y: 40, w: 95, h: 30 },
-      { x: 2100, y: 50, w: 75, h: 24 },
+      { x: 300,  y: 35, w: 90,  h: 28 },
+      { x: 700,  y: 55, w: 70,  h: 22 },
+      { x: 1100, y: 28, w: 110, h: 32 },
+      { x: 1500, y: 50, w: 80,  h: 26 },
+      { x: 1900, y: 38, w: 95,  h: 30 },
+      { x: 2300, y: 45, w: 75,  h: 24 },
+      { x: 2700, y: 32, w: 100, h: 30 },
+      { x: 3100, y: 52, w: 85,  h: 26 },
     ];
 
-    /* Player */
+    /* ── Player — start well before first ? block ───── */
     player = {
       x: TILE * 2,
       y: GY - TILE * 2,
@@ -1624,15 +1664,20 @@
       frameTimer: 0,
     };
 
-    /* ? Blocks — evenly spaced across level */
+    /* ── ? Blocks — one per section on each platform ── */
     blocks = [];
     coins  = [];
     particles = [];
 
-    const spacing = Math.floor(levelWidth / (SECTIONS.length + 1));
+    // Place ? block centred above each dedicated platform
+    const qPlatforms = platformDefs.slice(0, SECTIONS.length);
     SECTIONS.forEach((sec, i) => {
-      const bx = spacing * (i + 1) - TILE / 2;
-      const by = GY - TILE * 5;
+      const plat = qPlatforms[i];
+      // Centre of platform
+      const platCentreX = plat.x + Math.floor(plat.tiles / 2) * TILE;
+      const bx = platCentreX;
+      const by = plat.y - TILE * 2; // two tiles above platform surface
+
       blocks.push({
         x: bx, y: by, w: TILE, h: TILE,
         hit: false,
@@ -1641,29 +1686,32 @@
         sectionIndex: i,
         label: '?',
       });
-      // Add coin stack above each ? block as decoration
+
+      // 3 floating coins above each ? block
       for (let c = 0; c < 3; c++) {
+        const coinBaseY = by - TILE * 0.9 - c * TILE * 0.65;
         coins.push({
-          x: bx + TILE * 0.15,
-          y: by - TILE * (c + 1) * 0.7,
-          w: TILE * 0.5,
-          h: TILE * 0.5,
+          x: bx + TILE * 0.25,
+          y: coinBaseY,
+          w: TILE * 0.45,
+          h: TILE * 0.45,
           collected: false,
           spin: Math.random() * Math.PI * 2,
           floating: true,
-          floatAmp: 4,
-          floatSpeed: 0.04 + c * 0.01,
-          floatBase: by - TILE * (c + 1) * 0.7,
+          floatAmp: 5,
+          floatSpeed: 0.035 + c * 0.008,
+          floatBase: coinBaseY,
+          floatTimer: c * 0.8,
         });
       }
     });
 
-    /* Flag / goal at end */
+    /* ── Flag / goal ────────────────────────────────── */
     blocks.push({
-      x: levelWidth - TILE * 4,
-      y: GY - TILE * 6,
+      x: levelWidth - TILE * 5,
+      y: GY - TILE * 7,
       w: TILE,
-      h: TILE * 6,
+      h: TILE * 7,
       isFlagPole: true,
     });
 
@@ -1727,12 +1775,40 @@
     player.x += player.vx;
     player.y += player.vy;
 
-    // Ground collision
+    // Ground + platform collision
     player.onGround = false;
+
+    // Hard ground floor
     if (player.y + player.h >= GY) {
       player.y = GY - player.h;
       player.vy = 0;
       player.onGround = true;
+    }
+
+    // Platform tiles — land on top only (falling down onto them)
+    if (player.vy >= 0) {
+      groundTiles.forEach((g) => {
+        if (!g.isPlatform) return;
+        if (
+          player.x + player.w > g.x + 2 &&
+          player.x < g.x + g.w - 2 &&
+          player.y + player.h > g.y &&
+          player.y + player.h <= g.y + g.h &&
+          player.y < g.y
+        ) {
+          player.y = g.y - player.h;
+          player.vy = 0;
+          player.onGround = true;
+        }
+      });
+    }
+
+    // Kill zone — fell into a gap (below ground level)
+    if (player.y > GY + TILE * 4) {
+      player.x = TILE * 2;
+      player.y = GY - TILE * 4;
+      player.vx = 0;
+      player.vy = 0;
     }
 
     // Left bound
@@ -1875,32 +1951,47 @@
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    // Sky gradient (simple)
+    // Sky
     ctx.fillStyle = C.sky;
     ctx.fillRect(0, 0, W, H);
-
-    // Hill decorations (pixel style)
-    drawHills();
 
     ctx.save();
     ctx.translate(-camera.x, 0);
 
+    // Hills (inside camera so they scroll with world)
+    drawHills();
+
     // Clouds
     clouds.forEach((cl) => drawCloud(cl.x, cl.y, cl.w, cl.h));
 
-    // Ground
+    // Ground tiles + platforms
     const GY = H - TILE * 3;
     groundTiles.forEach((g) => {
-      // Grass top
-      ctx.fillStyle = C.groundT;
-      ctx.fillRect(g.x, g.y, g.w, TILE * 0.4);
-      // Dirt
-      ctx.fillStyle = C.ground;
-      ctx.fillRect(g.x, g.y + TILE * 0.4, g.w, g.h - TILE * 0.4);
-      // Grid lines
-      ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(g.x, g.y, g.w, g.h);
+      if (g.isPlatform) {
+        // Brick platform
+        ctx.fillStyle = C.brick;
+        ctx.fillRect(g.x, g.y, g.w, g.h);
+        // Brick mortar lines
+        ctx.strokeStyle = C.brickD;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(g.x, g.y, g.w, g.h);
+        ctx.beginPath();
+        ctx.moveTo(g.x, g.y + g.h / 2);
+        ctx.lineTo(g.x + g.w, g.y + g.h / 2);
+        ctx.stroke();
+        // Highlight top edge
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.fillRect(g.x + 2, g.y + 2, g.w - 4, 3);
+      } else {
+        // Ground — grass cap + dirt body
+        ctx.fillStyle = C.groundT;
+        ctx.fillRect(g.x, g.y, g.w, TILE * 0.4);
+        ctx.fillStyle = C.ground;
+        ctx.fillRect(g.x, g.y + TILE * 0.4, g.w, g.h - TILE * 0.4);
+        ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(g.x, g.y, g.w, g.h);
+      }
     });
 
     // Blocks
@@ -1982,14 +2073,30 @@
   }
 
   function drawHills() {
-    ctx.fillStyle = '#4a7a00';
-    // Two static hills as decorative bg
-    ctx.beginPath();
-    ctx.ellipse(W * 0.15 - camera.x * 0.1, H - TILE * 3, 80, 45, 0, Math.PI, 0);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(W * 0.6 - camera.x * 0.1, H - TILE * 3, 60, 35, 0, Math.PI, 0);
-    ctx.fill();
+    const GY = H - TILE * 3;
+    const hillDefs = [
+      { x: 150,  r: 90,  h: 55 },
+      { x: 500,  r: 70,  h: 40 },
+      { x: 850,  r: 110, h: 65 },
+      { x: 1200, r: 80,  h: 48 },
+      { x: 1600, r: 100, h: 60 },
+      { x: 2000, r: 75,  h: 45 },
+      { x: 2400, r: 95,  h: 58 },
+      { x: 2800, r: 85,  h: 50 },
+      { x: 3200, r: 105, h: 62 },
+    ];
+    hillDefs.forEach((hill) => {
+      // Dark green base
+      ctx.fillStyle = '#3a6800';
+      ctx.beginPath();
+      ctx.ellipse(hill.x, GY, hill.r, hill.h, 0, Math.PI, 0);
+      ctx.fill();
+      // Lighter green highlight
+      ctx.fillStyle = '#4a8800';
+      ctx.beginPath();
+      ctx.ellipse(hill.x - hill.r * 0.15, GY - hill.h * 0.3, hill.r * 0.5, hill.h * 0.4, 0, Math.PI, 0);
+      ctx.fill();
+    });
   }
 
   function drawCloud(x, y, w, h) {
